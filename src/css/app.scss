@@ -1,1 +1,30 @@
 // app global css in SCSS form
+@font-face {
+  font-family: primeLight;
+  src: url(./fonts/Prime-Light.woff);
+}
+
+@font-face {
+  font-family: primeRegular;
+  src: url(./fonts/Prime-Regular.woff);
+}
+
+@font-face {
+  font-family: courierRegular;
+  src: url(./fonts/CourierPrime-Regular.ttf);
+}
+
+
+// declare a class which applies it
+.font-prime-light {
+  font-family: 'primeLight', serif;
+}
+
+.font-prime-regular {
+  font-family: 'primeRegular', serif;
+}
+
+
+.font-code {
+  font-family: 'courierRegular', serif;
+}
