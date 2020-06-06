@@ -22,7 +22,7 @@ module.exports = function (ctx) {
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
     boot: [
       'axios',
-      'google'
+      'utils'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -66,8 +66,7 @@ module.exports = function (ctx) {
       extendWebpack(cfg) {
       },
       env: ctx.dev ? {
-        API_URL: JSON.stringify('http://localhost:8080'),
-        GOOGLE_CLIENT_ID: JSON.stringify('135634150521-f1duujmq176nq93oj7gkc77lce39284o.apps.googleusercontent.com')
+        API_URL: JSON.stringify('http://localhost:8080')
       } : {}
     },
 
@@ -96,7 +95,9 @@ module.exports = function (ctx) {
       directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Notify'
+      ]
     },
 
     // animations: 'all', // --- includes all animations

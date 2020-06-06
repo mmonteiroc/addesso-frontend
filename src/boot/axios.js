@@ -3,7 +3,7 @@ import axios from 'axios'
 
 
 const API = axios.create({
-  baseURL: process.env.API_JAVA
+  baseURL: process.env.API_URL
 });
 
 
@@ -26,7 +26,7 @@ export default async ({Vue, router}) => {
 
     const originalRequest = error.config;
 
-    if (error.response.status === 401) {
+    if (error.response.status === 401 && router.history.current.path !== '/login') {
       // UNAUTORIZED, token no valido o token caducado.
 
       /*

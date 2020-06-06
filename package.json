@@ -1,8 +1,8 @@
 {
   "name": "addesso-front",
   "version": "0.0.1",
-  "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "description": "Addesso | Best OPEN SOURCE ticket manager done ever.",
+  "productName": "Addesso",
   "cordovaId": "org.cordova.quasar.app",
   "capacitorId": "",
   "author": "mmonteirocl <miguelmonteiroclaveri@gmail.com>",
