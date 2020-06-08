@@ -29,10 +29,10 @@ const routes = [
   },
   {
     path: '/admin',
-    component: () => import('layouts/EmptyLayout.vue'),
+    component: () => import('layouts/PrivateLayout.vue'),
     children: [
       {path: '', redirect: 'dashboard'},
-      {path: 'dashboard', component: () => import('pages/public/Login.vue')},
+      {path: 'dashboard', component: () => import('pages/private/admin/index.vue')},
     ],
     beforeEnter: (from, to, next) => {
       /*
