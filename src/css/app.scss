@@ -28,3 +28,23 @@
 .font-code {
   font-family: 'courierRegular', serif;
 }
+
+.scrollArea::-webkit-scrollbar {
+  width: 2px;
+}
+
+/* Track */
+.scrollArea::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+/* Handle */
+.scrollArea::-webkit-scrollbar-thumb {
+  background: #418847;
+}
+
+/* Handle on hover */
+.scrollArea::-webkit-scrollbar-thumb:hover {
+  background: #2b572b;
+}
+

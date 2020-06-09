@@ -1,107 +1,34 @@
 <template>
   <q-page class="flex  flex-center">
-    <q-card>
-      <q-card-section>
-        <div class="text-h4">Add new statuses</div>
-      </q-card-section>
-      <q-card-section>
-        <q-input label="Short name" v-model="newStatus.shortName"/>
-        <q-input label="Description" v-model="newStatus.description"/>
-      </q-card-section>
-      <q-card-actions align="right">
-        <q-btn @click="saveNewStatus" label="Save"/>
-      </q-card-actions>
-    </q-card>
 
-    <q-card>
-      <q-card-section>
-        <div class="text-h4">Add new categories</div>
-      </q-card-section>
-      <q-card-section>
-        <q-input label="Category name" v-model="newCat.name"/>
-        <q-input label="Description" v-model="newCat.description"/>
-      </q-card-section>
-      <q-card-actions align="right">
-        <q-btn @click="saveNewCategory" label="Save"/>
-      </q-card-actions>
-    </q-card>
-
-    <q-card>
-      <q-card-section>
-        <div class="text-h4">Add new ticket</div>
-      </q-card-section>
-      <q-card-section>
-        <q-input label="Category name" v-model="newTicket.title"/>
-        <q-input label="Description" v-model="newTicket.description"/>
-      </q-card-section>
-      <q-card-actions align="right">
-        <q-btn @click="saveNewTicket" label="Save"/>
-      </q-card-actions>
-    </q-card>
-
-    <TicketCreator :show="true"></TicketCreator>
+    <HistoricTimeline :historic="historic"></HistoricTimeline>
   </q-page>
 </template>
 
 <script>
-  import TicketCreator from "components/TicketCreator";
+  import TicketCreator from "components/dialogs/TicketCreator";
+  import CategoryCreator from "components/dialogs/CategoryCreator";
+  import StatusCreator from "components/dialogs/StatusCreator";
+  import HistoricTimeline from "components/HistoricTimeline";
 
   export default {
     name: "index",
     components: {
-      TicketCreator
+      TicketCreator,
+      CategoryCreator,
+      StatusCreator,
+      HistoricTimeline
+    },
+    async created() {
+      const response = await this.$API.get("/tickets")
+      this.historic = this.$sortTicketHistory(response.data[0].ticketHistories)
     },
     data() {
       return {
-        newStatus: {
-          shortName: '',
-          description: ''
-        },
-        newCat: {
-          name: '',
-          description: ''
-        },
-        newTicket: {
-          title: '',
-          description: '',
-          idCategory: 3,
-          idStatus: 8
-        }
+        historic: null,
       }
     },
-    methods: {
-      async saveNewStatus() {
-        const response = await this.$API.post("/status", this.newStatus)
-        if (response.status === 200) {
-          this.$notify("Status added correctly", "green-10")
-          this.newStatus.shortName = '';
-          this.newStatus.description = ''
-        } else {
-          this.$notify("Has been an error", 'red-10')
-        }
-
-      },
-      async saveNewCategory() {
-        const response = await this.$API.post("/category", this.newCat)
-        if (response.status === 200) {
-          this.$notify("Category added correctly", "green-10")
-          this.newCat.name = '';
-          this.newCat.description = ''
-        } else {
-          this.$notify("Has been an error", 'red-10')
-        }
-      },
-      async saveNewTicket() {
-        const response = await this.$API.post("/tickets", this.newTicket)
-        if (response.status === 200) {
-          this.$notify("ticket added correctly", "green-10")
-          this.newTicket.title = '';
-          this.newTicket.description = ''
-        } else {
-          this.$notify("Has been an error", 'red-10')
-        }
-      }
-    }
+    methods: {}
   }
 </script>
 

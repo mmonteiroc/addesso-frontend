@@ -1,18 +1,18 @@
 <template>
   <q-dialog v-model="show" @before-hide="cleanTicket">
     <q-card style="min-width: 550px; ">
-      <q-card-section class="q-pa-md">
+      <q-card-section class="q-pl-md">
         <div class="text-h6">Create new ticket</div>
       </q-card-section>
       <q-separator inset=""/>
 
-      <q-card-section class="q-pa-md row">
-        <div class="col-12 col-md-6 q-pr-sm">
+      <q-card-section class=" row">
+        <div class="col-12 col-md-6 q-pa-xs">
           <q-input outlined dense v-model="ticket.title" autofocus placeholder="Title" class="q-mb-md"/>
           <q-editor v-model="ticket.description" min-height="5rem" placeholder="Here goes the ticket description..."
                     :toolbar="[['bold', 'italic', 'strike', 'underline']]"/>
         </div>
-        <div class="col-12 col-md-6 q-pl-sm">
+        <div class="col-12 col-md-6 q-pa-xs">
           <q-select dense outlined v-model="selectedCategory" class="q-pb-xs" :options="categories" value="code"
                     label="Category"
                     @input="ticket.idCategory = selectedCategory.code"/>
