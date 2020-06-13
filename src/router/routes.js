@@ -13,6 +13,7 @@ const routes = [
     children: [
       {path: '', redirect: 'dashboard'},
       {path: 'dashboard', component: () => import('pages/private/worker/index.vue')},
+      {path: 'ticket/:idTicket', component: () => import('pages/private/worker/TicketView.vue')},
     ],
     beforeEnter: (from, to, next) => {
       /*

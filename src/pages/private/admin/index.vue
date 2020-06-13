@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex  flex-center">
 
-    <HistoricTimeline :historic="historic"></HistoricTimeline>
+    <TicketCreator :show="true"></TicketCreator>
   </q-page>
 </template>
 
