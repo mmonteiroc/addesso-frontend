@@ -5,7 +5,9 @@ import axios from 'axios'
 const API = axios.create({
   baseURL: process.env.API_URL
 });
-
+const refresh = axios.create({
+  baseURL: process.env.API_URL
+})
 
 export default async ({Vue, router}) => {
 
@@ -32,7 +34,7 @@ export default async ({Vue, router}) => {
       /*
       * Step 1- Intentar renovar token
       * */
-      let response = await API.post('/auth/login/refresh', {
+      let response = await refresh.post('/auth/login/refresh', {
         refresh_token: localStorage.getItem("refresh_token")
       });
 

@@ -2,7 +2,7 @@ import {Notify} from 'quasar'
 import * as moment from 'moment';
 import {saveAs} from 'file-saver';
 
-export default ({Vue}) => {
+export default ({Vue, router}) => {
 
   Vue.prototype.$notify = function (message, color, position = 'bottom-left') {
     Notify.create({
@@ -58,5 +58,12 @@ export default ({Vue}) => {
   }
 
   Vue.prototype.$saver = saveAs;
+
+  Vue.prototype.$disconnect = function () {
+    localStorage.removeItem("access_token")
+    localStorage.removeItem("refresh_token")
+    localStorage.removeItem("roles")
+    router.push('/login')
+  };
 
 }

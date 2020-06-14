@@ -4,7 +4,7 @@
       <q-card class="shadow-0">
         <q-card-section>
           <div class="text-h5 q-mt-sm q-mb-xs" v-if="!editingIssue">{{ticket.title}}</div>
-          <q-input label="Title" v-if="editingIssue" outlined input-class="text-h5"
+          <q-input dense label="Title" v-if="editingIssue" outlined input-class="text-h5"
                    v-model="editedIssue.title"></q-input>
         </q-card-section>
         <q-card-section class=" ">
@@ -12,9 +12,11 @@
           <!--          EDIT / SAVE BUTTONS-->
           <q-btn label="Edit" size="sm" class="q-ma-xs" unelevated text-color="black" icon="create" color="grey-2"
                  @click="editIssue" v-if="!editingIssue"/>
+
+
           <q-btn label="Save" size="sm" class="q-ma-xs" text-color="white" icon="save" color="primary"
                  @click="saveEditedIssue" v-if="editingIssue"/>
-          <q-btn size="sm" class="q-my-xs q-mr-xs " text-color="white" icon="delete_outline" color="red-10"
+          <q-btn size="sm" class="q-my-xs q-mr-xs " text-color="white" icon-right="close" label="Cancel" color="red-10"
                  @click="cancelEditIssue" v-if="editingIssue"/>
 
 
@@ -436,7 +438,9 @@
           this.editingIssue = false;
           this.ticket.title = this.editedIssue.title;
           this.ticket.description = this.editedIssue.description;
-          this.ticket.category = this.editedIssue.newCategory
+          if (this.editedIssue.newCategory) {
+            this.ticket.category = this.editedIssue.newCategory
+          }
           this.$notify("Issue edited correctly", 'green-10')
         } else {
           this.cancelEditIssue();

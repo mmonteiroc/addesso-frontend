@@ -28,7 +28,7 @@
                     <q-icon name="account_circle"/>
                   </q-item-section>
                 </q-item>
-                <q-item clickable>
+                <q-item clickable @click="$disconnect">
                   <q-item-section>Disconnect</q-item-section>
                   <q-item-section side>
                     <q-icon name="exit_to_app"/>
@@ -56,11 +56,15 @@
                   <q-item-section side>
                     <q-icon name="security"/>
                   </q-item-section>
+
                 </q-item>
                 <q-separator/>
 
                 <q-item clickable>
-                  <q-item-section>Help</q-item-section>
+                  <q-item-section>Help center</q-item-section>
+                  <q-item-section side>
+                    <q-icon name="help_center"/>
+                  </q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
