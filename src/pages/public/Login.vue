@@ -5,7 +5,7 @@
         <h5 class="text-h3  q-my-md font-prime-regular text-white">Addesso</h5>
       </div>
       <div class="row">
-        <q-card bordered class="q-pa-lg ">
+        <q-card bordered class="q-pa-lg " v-if="!createRootUser">
           <q-card-section>
             <q-input class="q-my-sm" outlined v-model="login.email" type="email" label="Email"
                      @keypress.enter="doLogin"/>
@@ -41,6 +41,37 @@
           </q-card-section>
         </q-card>
 
+
+        <q-card bordered class="q-pa-lg " v-if="createRootUser">
+          <q-card-section class="q-pb-none">
+            <div class="text-subtitle1 flex full-width justify-between">
+              Application not initialized
+
+              <q-icon name="info" size="1.5em" color="primary">
+                <q-tooltip content-style="font-size: 1em">
+                  We gonna generate a root user which gonna be the administrator of the application. <br>
+                  You can change this password afterwards in the settings
+                </q-tooltip>
+              </q-icon>
+
+            </div>
+            <div>
+
+            </div>
+          </q-card-section>
+          <q-card-section>
+            <q-input class="q-my-sm" outlined v-model="newRoot.password" label="Password for root user"
+                     @keypress.enter="saveRootPassword"
+                     type="password"
+            >
+            </q-input>
+          </q-card-section>
+          <q-card-section class="q-px-md q-py-none">
+            <q-btn unelevated color="primary" size="md" class="full-width" label="save password"
+                   @click="saveRootPassword"/>
+
+          </q-card-section>
+        </q-card>
       </div>
     </div>
   </q-page>
@@ -52,11 +83,16 @@
   export default {
     name: 'Login',
 
-    async created() {
-
+    async beforeCreate() {
+      const response = await this.$API.get('/auth/root');
+      if (response.status === 200) this.createRootUser = true;
     },
     data() {
       return {
+        createRootUser: false,
+        newRoot: {
+          password: ''
+        },
         login: {
           email: '',
           password: '',
@@ -84,6 +120,15 @@
       },
       recoverPassword() {
 
+      },
+      async saveRootPassword() {
+        const response = await this.$API.post("/auth/root", this.newRoot)
+        if (response.status === 200) {
+          this.createRootUser = false;
+          this.$notify("Now you can access to the site as root with the password you just set", 'green-10')
+        } else {
+          this.$notify(response.data, 'grey-9')
+        }
       }
     }
   }

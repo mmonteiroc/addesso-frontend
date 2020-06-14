@@ -251,7 +251,11 @@
       Carousel,
       Slide
     },
+    props: {
+      sessionUser: Object
+    },
     async created() {
+
       /*
       * We get first the ticket info
       * */

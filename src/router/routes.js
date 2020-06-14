@@ -11,9 +11,10 @@ const routes = [
     path: '/worker',
     component: () => import('layouts/PrivateLayout.vue'),
     children: [
-      {path: '', redirect: 'dashboard'},
-      {path: 'dashboard', component: () => import('pages/private/worker/index.vue')},
-      {path: 'ticket/:idTicket', component: () => import('pages/private/worker/TicketView.vue')},
+      {path: '', redirect: 'panel'},
+      {path: 'panel', component: () => import('pages/private/worker/ControlPanel.vue')},
+      {path: 'issue/:idTicket', component: () => import('pages/private/worker/IssueView.vue')},
+      {path: 'todo', component: () => import('pages/private/worker/TodoView.vue')},
     ],
     beforeEnter: (from, to, next) => {
       /*
@@ -34,6 +35,7 @@ const routes = [
     children: [
       {path: '', redirect: 'dashboard'},
       {path: 'dashboard', component: () => import('pages/private/admin/index.vue')},
+      {path: 'panel', component: () => import('pages/private/admin/ControlPanel.vue')},
     ],
     beforeEnter: (from, to, next) => {
       /*
@@ -44,7 +46,7 @@ const routes = [
       const token = localStorage.getItem('access_token');
       const role = JSON.parse(localStorage.getItem("roles"));
 
-      if (!token || role.indexOf("admin") == -1) {
+      if (!token || role.indexOf("admin") === -1) {
         next('/');
       } else {
         next();
