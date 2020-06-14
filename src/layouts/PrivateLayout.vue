@@ -130,8 +130,6 @@
       this.$API.get('/user/me').then(response => {
         if (response.status === 200) this.sessionUser = response.data;
         else this.$notify(response.data)
-
-        console.log(response.data)
       })
     }
   }

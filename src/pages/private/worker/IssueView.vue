@@ -3,10 +3,20 @@
     <div class=" q-pa-md  col-12 col-md-8">
       <q-card class="shadow-0">
         <q-card-section>
-          <div class="text-h5 q-mt-sm q-mb-xs">{{ticket.title}}</div>
+          <div class="text-h5 q-mt-sm q-mb-xs" v-if="!editingIssue">{{ticket.title}}</div>
+          <q-input label="Title" v-if="editingIssue" outlined input-class="text-h5"
+                   v-model="editedIssue.title"></q-input>
         </q-card-section>
         <q-card-section class=" ">
-          <q-btn label="Edit" size="sm" class="q-ma-xs" unelevated text-color="black" icon="create" color="grey-2"/>
+
+          <!--          EDIT / SAVE BUTTONS-->
+          <q-btn label="Edit" size="sm" class="q-ma-xs" unelevated text-color="black" icon="create" color="grey-2"
+                 @click="editIssue" v-if="!editingIssue"/>
+          <q-btn label="Save" size="sm" class="q-ma-xs" text-color="white" icon="save" color="primary"
+                 @click="saveEditedIssue" v-if="editingIssue"/>
+          <q-btn size="sm" class="q-my-xs q-mr-xs " text-color="white" icon="delete_outline" color="red-10"
+                 @click="cancelEditIssue" v-if="editingIssue"/>
+
 
           <q-btn-group class="q-ma-xs" outline>
             <q-btn label="Assign" text-color="black" color="grey-2" size="sm"/>
@@ -33,7 +43,17 @@
               </div>
               <div class="row q-my-xs text-grey-7">
                 <div class="col-4">Category:</div>
-                <div class="col-8 text-grey-10">{{ticket.category.name}}</div>
+                <div class="col-8 text-grey-10" v-if="!editingIssue">{{ticket.category.name}}</div>
+
+                <!--                TODO SET DEFAULT THE ISSUE CAT THAT HAD BEFORE EDIT-->
+                <q-select v-if="editingIssue" class="col-8 q-pr-lg"
+                          label="Select category"
+                          dense outlined
+                          :options="categoriesOptions"
+                          v-model="editedIssue.newCategory"
+
+                />
+
               </div>
               <div class="row q-my-xs text-grey-7 vertical-middle">
                 <div class="col-4 flex  content-center">Status:</div>
@@ -44,6 +64,9 @@
                 </div>
               </div>
             </div>
+
+
+            <!--            FILES SECTION-->
             <div class="col-6">
               <div class="flex justify-between">
                 <div class="row">
@@ -120,7 +143,8 @@
             Description
             <q-separator/>
           </div>
-          <div class="rounded-borders q-pa-sm " v-html="ticket.description"></div>
+          <div class="rounded-borders q-pa-sm " v-html="ticket.description" v-if="!editingIssue"></div>
+          <q-editor v-model="editedIssue.description" v-if="editingIssue"></q-editor>
         </q-card-section>
         <q-card-section>
           <div class="q-mb-sm text-h6 ">
@@ -268,11 +292,11 @@
         this.historyCharged = true;
 
         this.ticket.comments = this.$sortTicketsComments(this.ticket.comments)
-        console.log(this.ticket.comments)
       }
     },
     data() {
       return {
+        editingIssue: false,
         newAttahcedFiles: null,
         uploadFileTicket: false,
         showCommentWriter: false,
@@ -283,11 +307,13 @@
           userAssigned: {},
           ticketHistories: []
         },
+        editedIssue: null,
         ticketHistory: [],
         newComment: {
           idTicket: null,
           text: '',
-        }
+        },
+        categoriesOptions: []
       }
     },
     methods: {
@@ -328,7 +354,6 @@
         const responses = await Promise.all(allPromises);
         responses.forEach((response, index) => {
           if (response.status !== 200) this.$notify("Error, file not uploaded: " + this.newAttahcedFiles[index].name, 'red-10')
-          console.log(response.status)
         })
         this.uploadFileTicket = false
         await this.refreshFiles()
@@ -337,7 +362,6 @@
         const response = await this.$API.get(`/resource/${file.idFile}`, {
           responseType: 'blob'
         });
-        console.log(file)
         this.$saver.saveAs(response.data, file.name)
       },
       async refreshFiles() {
@@ -365,6 +389,62 @@
         } else {
           this.$notify(response.data, 'red-10')
         }
+      },
+
+      /*
+      * Editing section
+      * */
+
+      getPosibleCategories() {
+        this.categoriesOptions = []
+        this.$API.get("/category").then(response => {
+          if (response.status === 200) {
+            const categories = response.data;
+            categories.forEach(cat => {
+              this.categoriesOptions.push({
+                label: cat.name,
+                name: cat.name,
+                idCategory: cat.idCategory,
+                description: cat.description
+              })
+            })
+          }
+        })
+      },
+
+      editIssue() {
+        this.getPosibleCategories()
+        this.editedIssue = {
+          idTicket: this.ticket.idTicket,
+          title: this.ticket.title,
+          description: this.ticket.description,
+        }
+        this.editingIssue = true;
+      },
+      cancelEditIssue() {
+        this.editedIssue = null;
+        this.editingIssue = false;
+      },
+      async saveEditedIssue() {
+
+        if (this.editedIssue.newCategory) {
+          this.editedIssue.idCategory = this.editedIssue.newCategory.idCategory
+        }
+
+        const response = await this.$API.put('/tickets', this.editedIssue)
+        if (response.status === 200) {
+          this.editingIssue = false;
+          this.ticket.title = this.editedIssue.title;
+          this.ticket.description = this.editedIssue.description;
+          this.ticket.category = this.editedIssue.newCategory
+          this.$notify("Issue edited correctly", 'green-10')
+        } else {
+          this.cancelEditIssue();
+          this.$notify(response.data, 'red-10')
+        }
+
+
+        console.log(this.ticket)
       }
     },
     filters: {}
