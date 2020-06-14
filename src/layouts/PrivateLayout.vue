@@ -8,11 +8,13 @@
           Addesso
         </q-toolbar-title>
         <div class="">
-          <q-btn round dense>
+          <q-btn round dense unelevated flat>
             <q-avatar>
               <q-img
-                :src="sessionUser.profilePhoto"
+                :src="baseApiUrl+'/photos?id='+sessionUser.profilePhoto.idFile+'&access='+sessionUser.accessPhoto"
                 placeholder-src="~assets/avatar.png"
+                alt="Profile picture"
+                v-if="loadProfileImage"
               />
             </q-avatar>
             <q-menu
@@ -98,7 +100,9 @@
   export default {
     data() {
       return {
+        baseApiUrl: process.env.API_URL,
         left: false,
+        loadProfileImage: false,
         menuLinks: [
           {
             name: 'Control panel',
@@ -131,9 +135,12 @@
       }
     },
     beforeCreate() {
+      this.baseApiUrl = process.env.API_URL
       this.$API.get('/user/me').then(response => {
-        if (response.status === 200) this.sessionUser = response.data;
-        else this.$notify(response.data)
+        if (response.status === 200) {
+          this.sessionUser = response.data;
+          this.loadProfileImage = true;
+        } else this.$notify(response.data)
       })
     }
   }
