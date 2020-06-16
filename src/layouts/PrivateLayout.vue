@@ -11,7 +11,7 @@
           <q-btn round dense unelevated flat>
             <q-avatar>
               <q-img
-                :src="baseApiUrl+'/photos?id='+sessionUser.profilePhoto.idFile+'&access='+sessionUser.accessPhoto"
+                :src="sessionUser.profilePhoto!==null?baseApiUrl+'/photos?id='+sessionUser.profilePhoto.idFile+'&access='+sessionUser.accessPhoto:''"
                 placeholder-src="~assets/avatar.png"
                 alt="Profile picture"
                 v-if="loadProfileImage"
@@ -23,7 +23,7 @@
               :offset="[0,10]"
             >
               <q-list style="min-width: 150px">
-                <q-item clickable>
+                <q-item clickable to="/account">
 
                   <q-item-section>My account</q-item-section>
                   <q-item-section side>
@@ -36,7 +36,7 @@
                     <q-icon name="exit_to_app"/>
                   </q-item-section>
                 </q-item>
-                <q-item clickable>
+                <q-item clickable to="/login">
                   <q-item-section>Change account</q-item-section>
                   <q-item-section side>
                     <q-icon name="people"/>
@@ -62,7 +62,7 @@
                 </q-item>
                 <q-separator/>
 
-                <q-item clickable>
+                <q-item clickable to="/faq">
                   <q-item-section>Help center</q-item-section>
                   <q-item-section side>
                     <q-icon name="help_center"/>
@@ -90,7 +90,7 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view :sessionUser="sessionUser"/>
+      <router-view :sessionUser="sessionUser" :loadProfileImage="loadProfileImage" :baseApiUrl="baseApiUrl"/>
     </q-page-container>
 
   </q-layout>
