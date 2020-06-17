@@ -58,8 +58,16 @@
 
 
         <q-card-actions>
-          <q-btn label="Manage addresses ..." color="primary" flat no-caps/>
+          <q-btn label="Manage addresses ..." color="primary" flat no-caps to="/addresses"/>
         </q-card-actions>
+      </q-card>
+
+      <q-card flat bordered class="q-mt-xl">
+        <q-card-section>
+          <div class="text-weight-light text-h6">
+            Open sessions
+          </div>
+        </q-card-section>
       </q-card>
     </div>
   </q-page>

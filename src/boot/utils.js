@@ -59,7 +59,12 @@ export default ({Vue, router}) => {
 
   Vue.prototype.$saver = saveAs;
 
-  Vue.prototype.$disconnect = function () {
+  Vue.prototype.$disconnect = async function () {
+
+    /*
+    * TODO discconnect
+    * */
+
     localStorage.removeItem("access_token")
     localStorage.removeItem("refresh_token")
     localStorage.removeItem("roles")

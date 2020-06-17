@@ -11,6 +11,7 @@
           <q-btn round dense unelevated flat>
             <q-avatar>
               <q-img
+                ratio="1"
                 :src="sessionUser.profilePhoto!==null?baseApiUrl+'/photos?id='+sessionUser.profilePhoto.idFile+'&access='+sessionUser.accessPhoto:''"
                 placeholder-src="~assets/avatar.png"
                 alt="Profile picture"

@@ -79,7 +79,8 @@
                   ></q-btn>
                 </div>
                 <div>
-                  <q-btn size="sm" flat round color="grey-2" text-color="black" icon="more_vert">
+                  <q-btn size="sm" flat round color="grey-2" text-color="black" icon="more_vert"
+                         v-if="ticket.atachedFiles.length>0">
                     <q-menu>
                       <q-list class="disable-select">
                         <q-item class="text-red-10" clickable v-ripple @click="eraseAllFiles">
@@ -184,12 +185,16 @@
             <div class="flex justify-between">
               <div class=" row content-center">
                 <q-avatar rounded size="2.5em" class="q-mr-sm">
-                  <q-img src=""
-                         placeholder-src="~assets/avatar.png"
+                  <q-img
+                    ratio="1"
+                    :src="sessionUser.profilePhoto!==null?baseApiUrl+'/photos?id='+sessionUser.profilePhoto.idFile+'&access='+sessionUser.accessPhoto:''"
+                    placeholder-src="~assets/avatar.png"
+                    alt="Profile picture"
+                    v-if="loadProfileImage"
                   />
                 </q-avatar>
                 <div class=" flex content-center ">
-                  pepe
+                  {{sessionUser.name}}
                 </div>
               </div>
               <div class="row content-center text-h6">
@@ -278,7 +283,9 @@
       Slide
     },
     props: {
-      sessionUser: Object
+      sessionUser: Object,
+      loadProfileImage: null,
+      baseApiUrl: null
     },
     async created() {
 
