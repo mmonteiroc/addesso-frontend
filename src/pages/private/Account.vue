@@ -68,6 +68,13 @@
             Open sessions
           </div>
         </q-card-section>
+        <q-card-section>
+          <q-list separator>
+            <q-item v-for="session in sessionUser.sessions" :key="session.idSession">
+              {{session.idSession}}
+            </q-item>
+          </q-list>
+        </q-card-section>
       </q-card>
     </div>
   </q-page>

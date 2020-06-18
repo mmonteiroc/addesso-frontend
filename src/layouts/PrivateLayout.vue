@@ -31,7 +31,7 @@
                     <q-icon name="account_circle"/>
                   </q-item-section>
                 </q-item>
-                <q-item clickable @click="$disconnect">
+                <q-item clickable @click="disconnect">
                   <q-item-section>Disconnect</q-item-section>
                   <q-item-section side>
                     <q-icon name="exit_to_app"/>
@@ -143,6 +143,16 @@
           this.loadProfileImage = true;
         } else this.$notify(response.data)
       })
+    },
+    methods: {
+      async disconnect() {
+        await this.$API.delete("/disconnect")
+
+        localStorage.removeItem("access_token")
+        localStorage.removeItem("refresh_token")
+        localStorage.removeItem("roles")
+        this.$router.push('/login')
+      }
     }
   }
 </script>

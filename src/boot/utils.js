@@ -1,6 +1,12 @@
 import {Notify} from 'quasar'
 import * as moment from 'moment';
 import {saveAs} from 'file-saver';
+import axios from 'axios'
+
+
+const API = axios.create({
+  baseURL: process.env.API_URL
+});
 
 export default ({Vue, router}) => {
 
@@ -58,17 +64,5 @@ export default ({Vue, router}) => {
   }
 
   Vue.prototype.$saver = saveAs;
-
-  Vue.prototype.$disconnect = async function () {
-
-    /*
-    * TODO discconnect
-    * */
-
-    localStorage.removeItem("access_token")
-    localStorage.removeItem("refresh_token")
-    localStorage.removeItem("roles")
-    router.push('/login')
-  };
 
 }

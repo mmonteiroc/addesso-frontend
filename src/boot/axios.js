@@ -31,23 +31,14 @@ export default async ({Vue, router}) => {
     if (error.response.status === 401 && router.history.current.path !== '/login') {
       // UNAUTORIZED, token no valido o token caducado.
 
+
       /*
       * Step 1- Intentar renovar token
       * */
-      let response = await refresh.post('/auth/login/refresh', {
-        refresh_token: localStorage.getItem("refresh_token")
-      });
-
-      /*
-      * Guardar token
-      * */
-
-      /*
-      * OK - token renovado
-      * */
-
-      if (response.status === 200) {
-
+      try {
+        let response = await refresh.post('/auth/login/refresh', {
+          refresh_token: localStorage.getItem("refresh_token")
+        });
         const token = response.data.access_token;
         const refresh = response.data.refresh_token;
         localStorage.setItem("access_token", token);
@@ -55,9 +46,10 @@ export default async ({Vue, router}) => {
 
 
         return API(originalRequest);
-      } else {
+      } catch (e) {
         router.push("/login")
       }
+
 
     }
 
