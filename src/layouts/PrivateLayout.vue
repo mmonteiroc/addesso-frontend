@@ -8,6 +8,7 @@
           Addesso
         </q-toolbar-title>
         <div class="">
+          <q-btn dense unelevated icon="settings" class="q-mr-md" to="/admin/panel" v-if="isAdmin"/>
           <q-btn round dense unelevated flat>
             <q-avatar>
               <q-img
@@ -133,7 +134,8 @@
           profilePhoto: null,
           surname: "",
           technician: false
-        }
+        },
+        isAdmin: false
       }
     },
     beforeCreate() {
@@ -142,6 +144,7 @@
         if (response.status === 200) {
           this.sessionUser = response.data;
           this.loadProfileImage = true;
+          this.isAdmin = this.sessionUser.admin;
         } else this.$notify(response.data)
       })
     },

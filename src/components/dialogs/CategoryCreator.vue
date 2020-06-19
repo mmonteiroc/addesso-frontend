@@ -42,6 +42,10 @@
         const response = await this.$API.post("/category", this.category)
         if (response.status === 200) {
           this.$notify("Category added correctly", "green-10")
+          this.$emit('added-category', {
+            name: this.category.name,
+            description: this.category.description
+          })
           this.close();
         } else {
           this.$notify("Has been an error", 'red-10')
