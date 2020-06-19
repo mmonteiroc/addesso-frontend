@@ -11,6 +11,12 @@ const refresh = axios.create({
 
 export default async ({Vue, router}) => {
 
+  refresh.interceptors.response.use(function (response) {
+    return response;
+  }, async function (error) {
+    return error.response;
+  })
+
   API.interceptors.request.use(config => {
     config.withCredentials = true;
     const token = localStorage.getItem('access_token');
@@ -35,18 +41,16 @@ export default async ({Vue, router}) => {
       /*
       * Step 1- Intentar renovar token
       * */
-      try {
-        let response = await refresh.post('/auth/login/refresh', {
-          refresh_token: localStorage.getItem("refresh_token")
-        });
+      let response = await refresh.post('/auth/login/refresh', {
+        refresh_token: localStorage.getItem("refresh_token")
+      });
+      if (response.status === 200) {
         const token = response.data.access_token;
         const refresh = response.data.refresh_token;
         localStorage.setItem("access_token", token);
         localStorage.setItem("refresh_token", refresh);
-
-
         return API(originalRequest);
-      } catch (e) {
+      } else {
         router.push("/login")
       }
 

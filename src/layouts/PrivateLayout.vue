@@ -91,7 +91,8 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view :sessionUser="sessionUser" :loadProfileImage="loadProfileImage" :baseApiUrl="baseApiUrl"/>
+      <router-view :sessionUser="sessionUser" :loadProfileImage="loadProfileImage" :baseApiUrl="baseApiUrl"
+                   @session-deleted="removeSession"/>
     </q-page-container>
 
   </q-layout>
@@ -152,6 +153,9 @@
         localStorage.removeItem("refresh_token")
         localStorage.removeItem("roles")
         this.$router.push('/login')
+      },
+      removeSession(s) {
+        this.sessionUser.sessions = this.sessionUser.sessions.filter(x => x.idSession !== s.idSession)
       }
     }
   }

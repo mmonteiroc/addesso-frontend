@@ -1,12 +1,7 @@
 import {Notify} from 'quasar'
 import * as moment from 'moment';
 import {saveAs} from 'file-saver';
-import axios from 'axios'
 
-
-const API = axios.create({
-  baseURL: process.env.API_URL
-});
 
 export default ({Vue, router}) => {
 
@@ -65,4 +60,12 @@ export default ({Vue, router}) => {
 
   Vue.prototype.$saver = saveAs;
 
+
+  Vue.prototype.$sortUserSessions = function (sessions) {
+    return sessions.sort((a, b) => {
+      const aTime = parse(a.lastConnection)
+      const bTime = parse(b.lastConnection)
+      return compareTime(aTime, bTime)
+    })
+  }
 }

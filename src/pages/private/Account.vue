@@ -1,7 +1,7 @@
 <template>
   <q-page class="row q-py-xl">
-    <div class="col-lg-2"></div>
-    <div class="col-12 col-md-5 col-lg-3 q-pa-md ">
+    <div class="col-lg-1"></div>
+    <div class="col-12 col-md-3  q-pa-md ">
       <q-card flat bordered>
         <q-card-section class="flex column flex-center">
           <q-avatar size="230px">
@@ -31,8 +31,8 @@
         </q-card-section>
       </q-card>
     </div>
-    <div class="col-12 col-md-7 col-lg-5 q-pa-md ">
-      <q-card flat bordered>
+    <div class="col-12 col-md-7 q-pa-md ">
+      <q-card flat bordered class="full-width">
         <q-card-section>
           <div class="text-h6 text-weight-light">
             Primary address
@@ -62,7 +62,7 @@
         </q-card-actions>
       </q-card>
 
-      <q-card flat bordered class="q-mt-xl">
+      <q-card flat bordered class="q-mt-xl full-width">
         <q-card-section>
           <div class="text-weight-light text-h6">
             Open sessions
@@ -71,7 +71,33 @@
         <q-card-section>
           <q-list separator>
             <q-item v-for="session in sessionUser.sessions" :key="session.idSession">
-              {{session.idSession}}
+              <q-item-section avatar>
+                <q-avatar>
+                  <q-icon name="fab fa-chrome"></q-icon>
+                </q-avatar>
+              </q-item-section>
+              <q-item-section>
+                <div>
+                  Last activity was:
+                </div>
+                <div class="text-weight-bold">
+                  {{parseDate(session.lastConnection)}}
+                </div>
+                <div class="text-weight-bold">
+                  From: {{session.lastConnectionIp}}
+                </div>
+              </q-item-section>
+              <q-item-section>
+                <div>
+                  Browser information
+                </div>
+                <div>
+                  Connected on <span class="text-weight-bold">{{session.browser}}</span>
+                </div>
+              </q-item-section>
+              <q-item-section side>
+                <q-btn icon="delete" label="Close session" flat color="red-10" @click="closeSession(session)"></q-btn>
+              </q-item-section>
             </q-item>
           </q-list>
         </q-card-section>
@@ -91,7 +117,23 @@
     data() {
       return {}
     },
+    methods: {
+      parseDate(data) {
+        return this.$parseDateTimeToGoodString(data)
+      },
+      closeSession(session) {
 
+        this.$API.delete(`/session/${session.idSession}`).then(response => {
+          if (response.status === 200) {
+            this.$notify("Session closed correctly", 'green-10')
+            this.$emit("session-deleted", session)
+          } else this.$notify(response.data, 'red-10');
+        })
+      },
+      sortSessions(sessions) {
+        return this.$sortUserSessions(sessions).reverse();
+      }
+    }
   }
 </script>
 
