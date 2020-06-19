@@ -11,6 +11,12 @@ const refresh = axios.create({
 
 export default async ({Vue, router}) => {
 
+  refresh.interceptors.response.use(function (response) {
+    return response;
+  }, async function (error) {
+    return error.response;
+  })
+
   API.interceptors.request.use(config => {
     config.withCredentials = true;
     const token = localStorage.getItem('access_token');
@@ -31,33 +37,23 @@ export default async ({Vue, router}) => {
     if (error.response.status === 401 && router.history.current.path !== '/login') {
       // UNAUTORIZED, token no valido o token caducado.
 
+
       /*
       * Step 1- Intentar renovar token
       * */
       let response = await refresh.post('/auth/login/refresh', {
         refresh_token: localStorage.getItem("refresh_token")
       });
-
-      /*
-      * Guardar token
-      * */
-
-      /*
-      * OK - token renovado
-      * */
-
       if (response.status === 200) {
-
         const token = response.data.access_token;
         const refresh = response.data.refresh_token;
         localStorage.setItem("access_token", token);
         localStorage.setItem("refresh_token", refresh);
-
-
         return API(originalRequest);
       } else {
         router.push("/login")
       }
+
 
     }
 

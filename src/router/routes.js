@@ -8,6 +8,13 @@ const routes = [
     ]
   },
   {
+    path: '/',
+    component: () => import('layouts/PrivateLayout.vue'),
+    children: [
+      {path: 'account', component: () => import('pages/private/Account.vue')}
+    ]
+  },
+  {
     path: '/worker',
     component: () => import('layouts/PrivateLayout.vue'),
     children: [

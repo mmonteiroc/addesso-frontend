@@ -2,6 +2,7 @@ import {Notify} from 'quasar'
 import * as moment from 'moment';
 import {saveAs} from 'file-saver';
 
+
 export default ({Vue, router}) => {
 
   Vue.prototype.$notify = function (message, color, position = 'bottom-left') {
@@ -59,11 +60,12 @@ export default ({Vue, router}) => {
 
   Vue.prototype.$saver = saveAs;
 
-  Vue.prototype.$disconnect = function () {
-    localStorage.removeItem("access_token")
-    localStorage.removeItem("refresh_token")
-    localStorage.removeItem("roles")
-    router.push('/login')
-  };
 
+  Vue.prototype.$sortUserSessions = function (sessions) {
+    return sessions.sort((a, b) => {
+      const aTime = parse(a.lastConnection)
+      const bTime = parse(b.lastConnection)
+      return compareTime(aTime, bTime)
+    })
+  }
 }
