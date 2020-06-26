@@ -84,6 +84,9 @@
     name: 'Login',
 
     async beforeCreate() {
+      if (localStorage.getItem("access_token") && localStorage.getItem("refresh_token")) await this.$router.push("/worker")
+
+
       const response = await this.$API.get('/auth/root');
       if (response.status === 200) this.createRootUser = true;
     },

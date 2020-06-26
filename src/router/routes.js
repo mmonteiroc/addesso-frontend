@@ -64,7 +64,10 @@ const routes = [
 
 // Always leave this as last one
 if (process.env.MODE !== 'ssr') {
-
+  routes.push({
+    path: '*',
+    component: () => import('pages/error/404.vue')
+  })
 }
 
 export default routes

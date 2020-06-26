@@ -8,7 +8,7 @@
           Addesso
         </q-toolbar-title>
         <div class="">
-          <q-btn dense unelevated icon="settings" class="q-mr-md" to="/admin/panel" v-if="isAdmin"/>
+          <q-btn flat icon="settings"  class="q-mr-md" to="/admin/panel" v-if="isAdmin"/>
           <q-btn round dense unelevated flat>
             <q-avatar>
               <q-img
